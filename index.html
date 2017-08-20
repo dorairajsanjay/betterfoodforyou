@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Better Food For You</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- EXTERNAL LIBRARIES -->
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://54.165.168.158/betterfoodforyou/libs/papaparse.min.js"></script>
+
+    <!-- LOCAL LIBRARIES -->
+    <script src="http://54.165.168.158/betterfoodforyou/js/hos_panel.js"></script>
+    <script src="http://54.165.168.158/betterfoodforyou/js/search_panel.js"></script>
+    <script src="http://54.165.168.158/betterfoodforyou/js/ts_parallel_chart.js"></script>
+    <script src="http://54.165.168.158/betterfoodforyou/js/ts_nutrition_facts.js"></script>
+    <script src="http://54.165.168.158/betterfoodforyou/js/load_data.js"></script>
+    <script src="http://54.165.168.158/betterfoodforyou/js/option_buttons.js"></script>
+    <script src="http://54.165.168.158/betterfoodforyou/js/bar_chart.js"></script>
+    <script src="http://54.165.168.158/betterfoodforyou/js/radar_chart.js"></script>
+
+    <script>
+
+        var url = "http://54.165.168.158/betterfoodforyou/data/demo_food_data_final.csv";
+
+	// Initial global variables
+        var radarData = [
+                        [
+                            {"area": "Fat ", "value": 0},
+                            {"area": "Sugars", "value": 0},
+                            {"area": "Protein ", "value": 0},
+                            {"area": "Sodium ", "value": 0},
+                            {"area": "Fiber ", "value": 0},
+                        ],
+                        [
+                            {"area": "Fat ", "value": 0},
+                            {"area": "Sugars", "value": 0},
+                            {"area": "Protein ", "value": 0},
+                            {"area": "Sodium ", "value": 0},
+                            {"area": "Fiber ", "value": 0},
+                        ]
+                    ];
+
+        // bfc stands for better food choices
+        var bfc_context = {
+            selected_topmenu_button :null,
+            selected_submenu_button :null,
+    };
+    </script>
+
+    </script>
+
+    <!-- REST API CALLBACK -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script  type="text/javascript" src="http://54.165.168.158/betterfoodforyou/libs/typeahead.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('input.typeahead').typeahead({
+            name: 'product_name',
+            remote: 'http://54.165.168.158:3000/search?key=%QUERY',
+            limit: 10
+        });
+    });
+    </script>
+
+</head>
+
+
+<body>
+
+      <table  width= "1200" border = "0">
+        <tr>
+            <td colspan = 4><img src="http://54.165.168.158/betterfoodforyou/images/veggie_title.png" alt="" border=0 height=75 width=1220></img></td>
+        </tr>
+
+        <tr>
+            <td width="610" align="left"><font style="font-family:sans-serif;font-weight:bold;font-size:18px;" color="black">Click on one of these product pictures below to start finding better choices:</a></td>
+    	    <td width="610" align="right"><font style="font-family:sans-serif;font-size:18px;" color="black"><a href="http://54.165.168.158/about.html">About this website</a></td>
+        </tr>
+
+         <tr valign = "top" >
+            <td id="hos-panel"  width = "760" height = "140">
+            </td>
+
+            <td id="search-panel" width = "440">
+                <table>
+                    <tr>
+                    <td>
+                        <label  style="font-family:sans-serif;font-weight:bold;font-size:18px;"><br><br>Or start typing below to search for a product:</label>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>
+                        <div class="search-text-div">
+                        <input  id="search-text" style="font-weight:bold;font-size:20px;font-family:sans-serif;border-width:5px;border-style:solid;border-color:gray;width:440px;height:30px" type="text" name="typeahead" class="typeahead tt-query" autocomplete="off" spellcheck="false" placeholder="Enter product name...">
+                        </div>
+                    </td>
+                    </tr>
+                </table>
+                <script>
+                    var data;
+                    loadUSDAData();
+                </script>
+            </td>
+         </tr>
+        <tr>
+            <table width = "1200">
+            <td>
+                <table width = "600">
+                    <tr>
+                        <td>
+                            <button type="button" id="sv" class="main_button inactive" onclick="optionButtonSelected(this.id)" >Simple View</button>
+                            <button type="button"  id="av-parallel" class="main_button inactive" onclick="optionButtonSelected(this.id)">Multiple Measures </button>
+                            <button type="button"  id="av-polygon" class="main_button inactive" onclick="optionButtonSelected(this.id)">Compare Two</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="measure-buttons">
+                                <button type="button"  id="fat" class="sv_button inactive" onclick="optionButtonSelected(this.id)">Fat</button>
+                                <button type="button"  id="sugars" class="sv_button inactive" onclick="optionButtonSelected(this.id)">Sugars</button>
+                                <button type="button"  id="proteins" class="sv_button inactive" onclick="optionButtonSelected(this.id)">Proteins</button>
+                                <button type="button"  id="sodium" class="sv_button inactive" onclick="optionButtonSelected(this.id)">Sodium</button>
+                                <button type="button"  id="fiber" class="sv_button inactive" onclick="optionButtonSelected(this.id)">Fiber</button>
+                            </div>
+                        </td>
+
+                        <script>
+                            initOptionButtons();
+                        </script>
+                    </tr>
+                    <tr>
+                        <td>
+                            <svg id = "chart1" width="600" height="400"></svg>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table width = "600">
+                    <tr>
+                        <td>
+                            <svg id = "nutfacts_panel" width="600" height="500"></svg>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </table>
+        </tr>
+
+        <tr>
+            <td colspan = 4><img src="http://54.165.168.158/betterfoodforyou/images/vegetable_bottom_border.png" alt="" border=0 height=75 width=1220></img></td>
+        </tr>
+      <table>
+
+    <script>
+
+    // other variables
+    var hos_data;
+    var hos_width = 760;
+    var hos_height = 140;
+
+    // create SVG element
+    var svg = d3.select("#hos-panel")
+            .append("svg")
+            .attr("width", hos_width)
+            .attr("height", hos_height);
+
+    d3.csv(url, function(error, data) {
+        drawHOS(svg,data);
+    });
+
+    </script>
+</body>
+
+</html>
