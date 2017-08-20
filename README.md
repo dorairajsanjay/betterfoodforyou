@@ -1,6 +1,6 @@
 This project is licensed under APACHE 2.0. 
 
-Initial Code Contribution from:
+<h1>Initial Code Contributors </h1> 
 
 1. Sanjay Dorairaj
 2. Tom Seddon
@@ -14,11 +14,9 @@ The server is based on node and MySQL
 
 Download the code and type
 
-<code>
-cd node_rest_server
-npm install
-node server.js
-</code>
+<code> cd node_rest_server </code>
+<code> npm install </code>
+<code> node server.js </code>
 
 You will need to set up a MySQL instance and import the USDA food database. The format of the import is the same 
 as the CSV file in the data director demo_food_data_final.csv
