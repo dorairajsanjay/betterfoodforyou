@@ -4,9 +4,9 @@ Website: http://betterfoodforyou.ddnsfree.com/
 
 <h1>Initial Code Contributors </h1> 
 
-1. Sanjay Dorairaj
-2. Tom Seddon
-3. Roseanna Hopper
+1. [Sanjay Dorairaj](https://github.com/dorairajsanjay)
+2. [Tom Seddon](https://github.com/tomtomseddon)
+3. [Roseanna Hopper](https://github.com/r-hopper)
 
 <h1> Usage Instructions </h1>
 
